@@ -4,10 +4,10 @@
 	<title>Results/GPA Calculator</title>
 </head>
 <body>
-    <style>
+	<style>
 		body {
 			font-family: Arial, sans-serif;
-			margin: 20px;
+		
 		}
 
 		h1 {
@@ -15,7 +15,7 @@
 		}
 
 		form {
-			max-width: 600px;
+			max-width: 1200px;
 			margin: 0 auto;
 		}
 
@@ -50,22 +50,76 @@
 		#grades-result {
 			margin-top: 20px;
 		}
+		.student-info {
+			font-weight: bold;
+        display: flex;
+		flex-direction: column;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
 
-		table {
-			width: 100%;
-			border-collapse: collapse;
-		}
+    .left-side {text-align: left;
+		top: -30%;
+    }
+	.right-side {
+        text-align: right;
+    }
 
-		th, td {
-			padding: 5px;
-			text-align: left;
-			border-bottom: 1px solid #ddd;
-		}
+    .student-info h4 {
+        margin: 5px 0;
+        font-weight: normal;
+    }
 
-		th {
-			background-color: #f2f2f2;
-		}
+    .academic-year {
+        margin-bottom: 10px;
+    }
 
+    .grades-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .grades-table th,
+    .grades-table td {
+        padding: 8px;
+        text-align: left;
+        border: 1px solid #ddd;
+    }
+
+    .grades-table th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+    }
+	    table {
+      width: 100%;
+      
+      margin-bottom: 20px;
+    }
+
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f2f2f2;
+      font-weight: bold;
+      color: #333;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+    tr:hover {
+      background-color: #e6e6e6;
+    }
+
+    .highlight {
+      background-color: #ffd700;
+    }
 		h2 {
 			margin-top: 20px;
 		}
@@ -81,15 +135,32 @@
 			margin-top: 5px;
 		}
 	</style>
-	<h1>CGPA Calculator</h1>
-    <h3>Determine your Grades and CGPA</h3>
-    <h4>Enter Scores Only</h4>
-    <h4>Good Luck..</h4>
-    <h6> <strong>But are you strong?</strong></h6>
+    <br><br>
+	<h1>GENERATE RESULTS</h1>
+	<h4>Enter Your Details</h4>
+	<h4>Enter Scores Only</h4>
+	<p>Course(s) will be added when the result for the course is released</p>
+    
+   
 
 	<form>
+		<label for="student_id">Student Number</label>
+        <input type="text" name="student_id" id="student_id">
+
         <label for="student">Student Name</label>
         <input type="text" name="student" id="student">
+
+		<label for="dob">Date of Birth</label>
+        <input type="date" name="dob" id="dob">
+
+		<label for="sex">Sex</label>
+        <input type="sex" name="sex" id="sex">
+
+		<label for="date_printed">Date Printed</label>
+        <input type="date" name="date_printed" id="date_printed">
+
+		<label for="year">Academic Year</label>
+        <input type="text" name="year" id="year">
 
 		<label for="calculus1">Calculus 1: Single Variable</label>
 		<input type="number" id="calculus1" name="calculus1" required><br>
@@ -142,8 +213,13 @@
 		    const calculateButton = document.getElementById('grade-button');
     calculateButton.addEventListener('click', function(event) {
         event.preventDefault();
+		const student_id = document.getElementById('student_id').value;
         const student_name = document.getElementById('student').value;
-
+		
+		const dob = document.getElementById('dob').value;
+		const sex = document.getElementById('sex').value;
+		const date_printed = document.getElementById('date_printed').value; 
+		const year = document.getElementById('year').value;
         const scores = [
             parseFloat(document.getElementById("calculus1").value),
             parseFloat(document.getElementById("mech1").value),
@@ -161,8 +237,18 @@
             parseFloat(document.getElementById("comp_tools").value)
         ];
 
+		const code = ['SENG 101', 
+		'SENG 103', 
+		'SENG 105', 
+		'SENG 107', 
+		'CPEN 103', 
+		'UGRC 110', 
+		'SENG 111', 
+		'SENG 108', 
+	'SENG 106', 'SENG 104', 'UGRC 150', 'CPEN 104', 'SENG 102', 'SENG 112']
         const grade = [];
         const grade_point = [];
+		const gpt = [];
         const credit = [4, 3, 3, 2, 3, 3, 3, 3, 3, 3, 3, 3, 4, 3];
         let totalCredits = 0;
         let totalGPT = 0;
@@ -175,122 +261,201 @@
             if (score >= 80) {
                 grade.push("A");
                 grade_point.push(4);
+				gpt.push(4 * credit[i])
             } else if (score >= 75 && score < 80) {
                 grade.push("B+");
                 grade_point.push(3.5);
+				gpt.push(3.5 * credit[i])
             } else if (score >= 70 && score < 75) {
                 grade.push("B");
                 grade_point.push(3);
+				gpt.push(3 * credit[i])
             } else if (score >= 65 && score < 70) {
                 grade.push("C+");
                 grade_point.push(2.5);
+				gpt.push(2.5 * credit[i])
             } else if (score >= 60 && score < 65) {
                 grade.push("C");
                 grade_point.push(2);
+				gpt.push(2 * credit[i])
+			
             } else if (score >= 55 && score < 60) {
                 grade.push("D+");
                 grade_point.push(1.5);
+				gpt.push(1.5 * credit[i])
             } else if (score >= 50 && score < 55) {
                 grade.push("D");
                 grade_point.push(1);
+				gpt.push(1 * credit[i])
             } else if (score >= 40 && score < 50) {
                 grade.push("E");
                 grade_point.push(0.5);
+				gpt.push(0.5 * credit[i])
             } else {
                 grade.push("F");
                 grade_point.push(0);
+				gpt.push(0 * credit[i])
             }
+			
 
             totalGPT += grade_point[i] * credit[i];
         }
+
+		
 
         const cgpa = totalGPT / totalCredits;
 
         const result = document.getElementById("grades-result");
 
 			result.innerHTML = `
-                <h1> ${student_name}</h1>
-				<h2>Grades</h2>
-                <h3>CGPA: ${cgpa.toFixed(2)} </h3>
-				
-				<table>
+			<div>
+				<h1>ACADEMIC RECORD</h1>
+				</div>
+				<br><br>
+			
+				<div class="left-side">
+    <div class="student-info">
+        <h4><strong>Student Name:</strong> ${student_name}</h4>
+        <h4><strong>Student Number:</strong> ${student_id}</h4>
+    </div>
+</div>
+
+<div class="right-side">
+    <div class="student-info">
+        <h4><strong>Sex:</strong> ${sex}</h4>
+        <h4><strong>Date of Birth:</strong> ${dob}</h4>
+        <h4><strong>Date Printed:</strong> ${date_printed}</h4>
+    </div>
+</div>
+
+        
+		<h3>CCT: ${totalCredits}</h3>
+        <h3>CCP: ${totalCredits}</h3>
+        <strong><h3>CGPA: ${cgpa.toFixed(2)}</h3></strong>
+        
+        <table class="grades-table">
 					<tr>
-						<th>Course</th>
-						<th>Grade</th>
+						<th>CODE</th>
+						<th>COURSE TITLE</th>
+						<th>CREDIT</th>
+						<th>GRADE</th>
+						<th>GPT</th>
 						
 					</tr>
 					<tr>
+						<td>${code[0]}</td>
 						<td>Calculus 1: Single Variable</td>
+						<td>${credit[0]}</td>
 						<td>${grade[0]}</td>
+						<td>${gpt[0]}</td>
 						
 					</tr>
 					<tr>
+			            <td>${code[1]}</td>
 						<td>Mechanics 1: Statics</td>
+						<td>${credit[1]}</td>
 						<td>${grade[1]}</td>
+						<td>${gpt[1]}</td>
 						
 					</tr>
 					<tr>
-						<td>Engineering Graphics (CAD)</td>
-						<td>${grade[2]}</td>
-						
-					</tr>
-					<tr>
-						<td>Intro to Engineering.</td>
-						<td>${grade[3]}</td>
-						
-					</tr>
-					<tr>
-						<td>Computer Engineering Innovations</td>
-						<td>${grade[4]}</td>
-					
-					</tr>
-					<tr>
-						<td>Academic Writing 1</td>
-						<td>${grade[5]}</td>
-						
-					</tr>
-					<tr>
-						<td>General Physics</td>
-						<td>${grade[6]}</td>
-						
-					</tr>
-                    <tr>
-                    <td>Basic Electronics</td>
-						<td>${grade[7]}</td>
-						
-					</tr>
-                    <tr>
-                    <td>Applied Electricity</td>
-						<td>${grade[8]}</td>
-						
-					</tr>
-                
-                    <tr>
-                    <td>Mechanics 2: Dynamics</td>
-						<td>${grade[9]}</td>
-						
-					</tr>
+    <td>${code[2]}</td>
+    <td>Engineering Graphics (CAD)</td>
+    <td>${credit[2]}</td>
+    <td>${grade[2]}</td>
+    <td>${gpt[2]}</td>
+</tr>
 
-                    <tr>
-                    <td>Critical Thinking & Practical Reasoning</td>
-						<td>${grade[10]}</td>
-						
-					</tr>
+<tr>
+    <td>${code[3]}</td>
+    <td>Intro to Engineering.</td>
+    <td>${credit[3]}</td>
+    <td>${grade[3]}</td>
+    <td>${gpt[3]}</td>
+</tr>
 
-                    <tr>
-                    <td>Engineering Design</td>
-						<td>${grade[11]}</td>
-						
-					</tr>
-                    <tr>
-                    <td>Calculus 2: Multivariable</td>
-						<td>${grade[12]}</td>
-						
-					</tr>
+<tr>
+    <td>${code[4]}</td>
+    <td>Computer Engineering Innovations</td>
+    <td>${credit[4]}</td>
+    <td>${grade[4]}</td>
+    <td>${gpt[4]}</td>
+</tr>
 
-                    <tr>
-                    <td>Engineering Computational Tools</td>
-						<td>${grade[13]}</td>
+<tr>
+    <td>${code[5]}</td>
+    <td>Academic Writing 1</td>
+    <td>${credit[5]}</td>
+    <td>${grade[5]}</td>
+    <td>${gpt[5]}</td>
+</tr>
+
+<tr>
+    <td>${code[6]}</td>
+    <td>General Physics</td>
+    <td>${credit[6]}</td>
+    <td>${grade[6]}</td>
+    <td>${gpt[6]}</td>
+</tr>
+
+<tr>
+    <td>${code[7]}</td>
+    <td>Basic Electronics</td>
+    <td>${credit[7]}</td>
+    <td>${grade[7]}</td>
+    <td>${gpt[7]}</td>
+</tr>
+
+<tr>
+    <td>${code[8]}</td>
+    <td>Applied Electricity</td>
+    <td>${credit[8]}</td>
+    <td>${grade[8]}</td>
+    <td>${gpt[8]}</td>
+</tr>
+
+<tr>
+    <td>${code[9]}</td>
+    <td>Mechanics 2: Dynamics</td>
+    <td>${credit[9]}</td>
+    <td>${grade[9]}</td>
+    <td>${gpt[9]}</td>
+</tr>
+
+<tr>
+    <td>${code[10]}</td>
+    <td>Critical Thinking & Practical Reasoning</td>
+    <td>${credit[10]}</td>
+    <td>${grade[10]}</td>
+    <td>${gpt[10]}</td>
+</tr>
+
+<tr>
+    <td>${code[11]}</td>
+    <td>Engineering Design</td>
+    <td>${credit[11]}</td>
+    <td>${grade[11]}</td>
+    <td>${gpt[11]}</td>
+</tr>
+
+<tr>
+    <td>${code[12]}</td>
+    <td>Calculus 2: Multivariable</td>
+    <td>${credit[12]}</td>
+    <td>${grade[12]}</td>
+    <td>${gpt[12]}</td>
+</tr>
+
+<tr>
+    <td>${code[13]}</td>
+    <td>Engineering Computational Tools</td>
+    <td>${credit[13]}</td>
+    <td>${grade[13]}</td>
+    <td>${gpt[13]}</td>
+</tr>
+
+
+
 						
 				</table>
 
